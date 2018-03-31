@@ -48,70 +48,75 @@ class SoracomApiClient{
         });
     }
 
-    getSimDetails(imsi){
+    getSimDetails(_imsi){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get("/subscribers/" + imsi, function(err,req,body){
+                this.soracom.get("/subscribers/:imsi", {imsi:_imsi},function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    updateSimSpeed(imsi,speed){
+    updateSimSpeed(_imsi,speed){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.post("/subscribers/" + imsi + '/update_speed_class', {speedClass:speed},function(err,req,body){
+                this.soracom.post("/subscribers/:imsi/update_speed_class", {imsi:_imsi, speedClass:speed},
+                    function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    deleteSimSession(imsi){
+    deleteSimSession(_imsi){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.post("/subscribers/"+ imsi +"/delete_session", function(err,req,body){
+                this.soracom.post("/subscribers/:imsi/delete_session", function(err,req,body){
                     resolve(body);
                 })
             })
         });
     }
 
-    updateSimName(imsi,simName){
+    updateSimName(_imsi,simName){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.put("/subscribers/"+imsi+"/tags",[{tagName:"name", tagValue:simName}],function(err,req,body){
+                this.soracom.defaults({ imsi: _imsi });
+                this.soracom.put("/subscribers/:imsi/tags",[{tagName:"name", tagValue:simName}],
+                    function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    addNewTags(imsi,tags){
+    addNewTags(_imsi,tags){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.put("/subscribers/"+imsi+"/tags",tags,function(err,req,body){
+                this.soracom.defaults({ imsi: _imsi });
+                this.soracom.put("/subscribers/:imsi/tags",tags,function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    deleteTag(imsi,tagName){
+    deleteTag(_imsi,_tagName){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.delete("/subscribers/"+imsi+"/tags/"+tagName,function(err,req,body){
+                this.soracom.delete("/subscribers/:imsi/tags/:tagName",{imsi:_imsi, tagName:_tagName},
+                    function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    updateGrop(imsi, groupId){
+    updateGrop(_imsi, _groupId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.post("subscribers/"+imsi+"/set_group", {groupId:groupId},function(err,req,body){
+                this.soracom.post("subscribers/:imsi/set_group", {imsi:_imsi, groupId:_groupId},function(err,req,body){
                     resolve(body);
                 })
             })
@@ -139,71 +144,76 @@ class SoracomApiClient{
         });
     }
 
-    deleteGroup(groupId){
+    deleteGroup(_groupId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.delete("/groups"+groupId, function(err,req,body){
+                this.soracom.delete("/groups/:groupId", {groupId:_groupId}, function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    getGroupDetails(groupId){
+    getGroupDetails(_groupId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get("/groups/"+groupId, function(err,req,body){
+                this.soracom.get("/groups/:groupId", {groupId:_groupId}, function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    updateGroupConfiguration(groupId, namespace, config){
+    updateGroupConfiguration(_groupId, _namespace, config){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.put("/groups/"+groupId+"/configuration/"+namespace,config,function(err,req,body){
+                config['groupId']=_groupId;
+                config['namespace']=_namespace;
+                this.soracom.put("/groups/:groupId/configuration/:namespace",config,function(err,req,body){
                     resolve(body)
                 })
             })
         })
     }
 
-    delteGroupConfiguration(groupId, namespace, name){
+    delteGroupConfiguration(_groupId, _namespace, _name){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.delete("/groups/"+groupId+"/configuration/"+namespace+"/"+name,function(err,req,body){
+                this.soracom.delete("/groups/:groupId/configuration/:namespace/:name", 
+                    {groupId:_groupId, namespace:_namespace, name:_name},function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    getSubscriberDependsOnGroup(groupId){
+    getSubscriberDependsOnGroup(_groupId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get("/groups/"+groupId+"/subscribers",function(err,req,body){
+                this.soracom.get("/groups/:groupId/subscribers", {groupId:_groupId},function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    updateGroupTags(groupId,tags){
+    updateGroupTags(_groupId,tags){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.put("/groups/"+groupId+"/tags",tags, function(err,req,body){
+                tags['groupId'] = _groupId;
+                this.soracom.put("/groups/:groupId/tags",tags, function(err,req,body){
                     resolve(body);
                 })
             })
         })
     }
 
-    deleteGroupTag(groupId, tagName){
+    deleteGroupTag(_groupId, _tagName){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId,this.authKey).then(result=>{
-                this.soracom.delete("/groups/"+groupId+"/tags/"+tagName, function(err,req,body){
-                    resolve(body);
+                this.soracom.delete("/groups/:groupId/tags/:tagName", {groupId:_groupId, tagName:_tagName}, 
+                    function(err,req,body){
+                        resolve(body);
                 })
             })
         })
@@ -214,41 +224,43 @@ class SoracomApiClient{
     getCredentials(){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get("/credentials",function(err,req,body){
+                this.soracom.get("/credentials", function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    deleteCredential(credentialId){
+    deleteCredential(_credentialId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.delete("/credentials/"+credentialId,function(err,req,body){
+                this.soracom.delete("/credentials/:credentialId", {credentialId:_credentialId}, function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    createNewCredential(credentialId, _description, serviceType, credential){
+    createNewCredential(_credentialId, _description, _serviceType, _credential){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.post("/credentials/"+credentialId, {credentials:credential,
+                this.soracom.post("/credentials/:credentialId", {credentialId:_credentialId,
+                                                                credentials:_credential,
                                                                 description:_description,
-                                                                type:serviceType}, function(err,req,body){
+                                                                type:_serviceType}, function(err,req,body){
                     resolve(body);
                 });
             });
         });
     }
 
-    updateCredential(credentialId, _description, serviceType, credential){
+    updateCredential(_credentialId, _description, _serviceType, _credential){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.put("/credentials/"+credentialId, {credentials:credential,
+                this.soracom.put("/credentials/:credentialId", {credentialId:_credentialId,
+                                                                credentials:_credential,
                                                                 description:_description,
-                                                                type:serviceType}, function(err,req,body){
+                                                                type:_serviceType}, function(err,req,body){
                     resolve(body);
                 });
             });
@@ -274,16 +286,15 @@ class SoracomApiClient{
                 reject(new Error("Invalid query. 'period' is must property."));
                 return;
             }
-            var from = Date.parse(query['from']).toString().slice(0,-3);
-            var to = Date.parse(query['to']).toString().slice(0,-3);
-            var period = query['period'];
-            if(!(period in {'month':'','day':'','minutes':''})){
+            query['from'] = Date.parse(query['from']).toString().slice(0,-3);
+            query['to'] = Date.parse(query['to']).toString().slice(0,-3);
+            if(!(query['period'] in {'month':'','day':'','minutes':''})){
                 reject(new Error("Invalid query. 'period' should be month, day, minutes."));return;
-            }  
-            var apiUri = "/stats/air/subscribers/" + imsi + 
-                "/?from=" + from + "&to=" + to + "&period=" + period;
+            }
+            query['imsi'] = imsi;
+            var apiUri = "/stats/air/subscribers/:imsi" 
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get(apiUri,function(err,req,body){
+                this.soracom.get(apiUri, query, function(err,req,body){
                     if(err){
                         reject(new Error(err['message']));
                         return;
@@ -310,18 +321,16 @@ class SoracomApiClient{
                 reject(new Error("Invalid query. 'period' is must property."));
                 return;
             }
-            var from = Date.parse(query['from']).toString().slice(0,-3);
-            var to = Date.parse(query['to']).toString().slice(0,-3);
-            var period = query['period'];
-            if(!(period in {'month':'','day':'','minutes':''})){
+            query['from'] = Date.parse(query['from']).toString().slice(0,-3);
+            query['to'] = Date.parse(query['to']).toString().slice(0,-3);
+            if(!(query['period'] in {'month':'','day':'','minutes':''})){
                 reject(new Error("Invalid query. 'period' should be month, day, minutes."));return;
             }  
-            var apiUri = "/stats/beam/subscribers/" + 
-            imsi +"/?from="
-            +from+"&to="+to+"&period="+period;
-        
+            query['imsi'] = imsi;
+            var apiUri = "/stats/beam/subscribers/:imsi";
+            
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get(apiUri,function(err,req,body){
+                this.soracom.get(apiUri,query,function(err,req,body){
                     if(err){
                         reject(new Error(err['message']));
                         return;
@@ -334,10 +343,10 @@ class SoracomApiClient{
 
     /**Billing API */
 
-    getBillingWithDate(yearMonth){
+    getBillingWithDate(_yearMonth){
         return new Promise((resolve, reject)=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                this.soracom.get("/bills/"+yearMonth, function(err,req,body){
+                this.soracom.get("/bills/:yearMonth", {yearMonth:_yearMonth}, function(err,req,body){
                     if(err){
                         reject(new Error(err['message']));
                         return
