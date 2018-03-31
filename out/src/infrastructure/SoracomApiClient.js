@@ -258,34 +258,74 @@ class SoracomApiClient{
 
     /* Stats API*/
     getStatsAirSubscriber(imsi,query){
-
-        var from = Date.parse(query['from']).toString().slice(0,-3);
-        var to = Date.parse(query['to']).toString().slice(0,-3);
-        var period = query['period'];
-        var apiUri = "/stats/air/subscribers/" + 
-            imsi +"/?from="
-            +from+"&to="+to+"&period="+period;
         
-        return new Promise(resolve=>{
+        return new Promise((resolve,reject)=>{
+            if(!('from' in query)){
+                reject(new Error("Invalid query. 'from' is must property."));
+                return;
+            }
+
+            if(!('to' in query)){
+                reject(new Error("Invalid query. 'to' is must property."));
+                return;
+            }
+
+            if(!('period' in query)){
+                reject(new Error("Invalid query. 'period' is must property."));
+                return;
+            }
+            var from = Date.parse(query['from']).toString().slice(0,-3);
+            var to = Date.parse(query['to']).toString().slice(0,-3);
+            var period = query['period'];
+            if(!(period in {'month':'','day':'','minutes':''})){
+                reject(new Error("Invalid query. 'period' should be month, day, minutes."));return;
+            }  
+            var apiUri = "/stats/air/subscribers/" + imsi + 
+                "/?from=" + from + "&to=" + to + "&period=" + period;
             this.authentication(this.authKeyId, this.authKey).then(result=>{
                 this.soracom.get(apiUri,function(err,req,body){
+                    if(err){
+                        reject(new Error(err['message']));
+                        return;
+                    }
                     resolve(body);
                 })
             })
         })
     }
 
-    getStatsBeanSubscriber(imsi, query){
-        var from = Date.parse(query['from']).toString().slice(0,-3);
-        var to = Date.parse(query['to']).toString().slice(0,-3);
-        var period = query['period'];
-        var apiUri = "/stats/beam/subscribers/" + 
+    getStatsBeamSubscriber(imsi, query){
+        return new Promise((resolve,reject)=>{
+            if(!('from' in query)){
+                reject(new Error("Invalid query. 'from' is must property."));
+                return;
+            }
+
+            if(!('to' in query)){
+                reject(new Error("Invalid query. 'to' is must property."));
+                return;
+            }
+
+            if(!('period' in query)){
+                reject(new Error("Invalid query. 'period' is must property."));
+                return;
+            }
+            var from = Date.parse(query['from']).toString().slice(0,-3);
+            var to = Date.parse(query['to']).toString().slice(0,-3);
+            var period = query['period'];
+            if(!(period in {'month':'','day':'','minutes':''})){
+                reject(new Error("Invalid query. 'period' should be month, day, minutes."));return;
+            }  
+            var apiUri = "/stats/beam/subscribers/" + 
             imsi +"/?from="
             +from+"&to="+to+"&period="+period;
         
-        return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
                 this.soracom.get(apiUri,function(err,req,body){
+                    if(err){
+                        reject(new Error(err['message']));
+                        return;
+                    }
                     resolve(body);
                 })
             })

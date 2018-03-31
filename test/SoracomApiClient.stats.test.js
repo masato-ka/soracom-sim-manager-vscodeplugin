@@ -19,40 +19,138 @@ suite("SoracomApiClient Test", ()=>{
 //        console.log("suiteTherdown")
     })
 
-    test("Normal.getStatsAirSubscriber", (done)=>{
-        target.getBillingLatest().then(result=>{
-            assert.equal(true,'lastEvaluatedTime' in result);
-            assert.equal(true,'amount' in result);
-            done();
-        }).catch(done,done);
-    })
-
-    test("Normal_getBillingWithDate", (done)=>{
-        var yearManth = '201802'
-        target.getBillingWithDate(yearManth).then(result =>{
-            assert.equal(true, 'yearMonth' in result);
-            assert.equal(true, 'amount' in result);
-            done();
-        }).catch(done,done);
-    })
-
-    test("Abnormal_InvalidDate_getBillingWithDate", ()=>{
-        var abnormalYearManth = '000000'
-        return target.getBillingWithDate(abnormalYearManth).then(result=>{
-            assert.equal("Fail",result);
-        }).catch((error)=>{
-            assert.equal("Error: Invalid year month format. format:yyyyMM value:000000",error)
+    /**getStatsAirSubscriber */
+    test("Normal01.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01T00:00:00",to:"2018-02-05T00:00:00", period:"day"};
+        return target.getStatsAirSubscriber(imsi,query).then(result=>{
+            assert.equal(1, result.length);
         });
     })
 
-    test("Abnormal_FeatureDate_getBillingWithDate", ()=>{
-        var abnormalYearManth = '205010'
-        return target.getBillingWithDate(abnormalYearManth).then(result=>{
-            assert.equal("Fail",result);
-            
-        }).catch((error)=>{
-            assert.equal("Error: Bill not found.",error)
+    test("Normal02.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01",to:"2018-02-05", period:"day"};
+        return target.getStatsAirSubscriber(imsi,query).then(result=>{
+            assert.equal(1, result.length);
         });
+    })
+
+    test("Abnorml01.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", period:"day"}
+        return target.getStatsAirSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'to' is must property.",error);
+        })
+    })
+
+    test("Abnorml02.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {to:"2018-02-01", period:"day"}
+        return target.getStatsAirSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'from' is must property.",error);
+        })
+    })
+
+    test("Abnorml03.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", to:"2018-02-03"}
+        return target.getStatsAirSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'period' is must property.",error);
+        })
+    })
+
+    test("Abnorml04.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", to:"2018-02-03", period:"hoge"}
+        return target.getStatsAirSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'period' should be month, day, minutes.",error);
+        })
+    })
+
+    test("Abnorml05.getStatsAirSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"qweyui", to:"2018-02-03", period:"day"}
+        return target.getStatsAirSubscriber(imsi, query).then(result=>{
+            assert("Fail test", result);
+        }).catch((error)=>{
+            assert("Error: Bad request parameters. from",error);
+        })
+    })
+
+    /**getStatsBeamSubscriber */
+    test("Normal01.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01T00:00:00",to:"2018-02-05T00:00:00", period:"day"};
+        return target.getStatsBeamSubscriber(imsi,query).then(result=>{
+            assert.equal(1, result.length);
+        });
+    })
+
+    test("Normal02.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01",to:"2018-02-05", period:"day"};
+        return target.getStatsBeamSubscriber(imsi,query).then(result=>{
+            assert.equal(1, result.length);
+        });
+    })
+
+    test("Abnorml01.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", period:"day"}
+        return target.getStatsBeamSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'to' is must property.",error);
+        })
+    })
+
+    test("Abnorml02.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {to:"2018-02-01", period:"day"}
+        return target.getStatsBeamSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'from' is must property.",error);
+        })
+    })
+
+    test("Abnorml03.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", to:"2018-02-03"}
+        return target.getStatsBeamSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'period' is must property.",error);
+        })
+    })
+
+    test("Abnorml03.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"2018-02-01", to:"2018-02-03", period:"hoge"}
+        return target.getStatsBeamSubscriber(imsi, query).then(result=>{
+            assert.equal("Fail test", result);
+        }).catch((error)=>{
+            assert.equal("Error: Invalid query. 'period' should be month, day, minutes.",error);
+        })
+    })
+
+    test("Abnorml04.getStatsBeamSubscriber", ()=>{
+        var imsi = '440103197795859';
+        var query = {from:"qweyui", to:"2018-02-03", period:"day"}
+        return target.getStatsBeamSubscriber(imsi, query).then(result=>{
+            assert("Fail test", result);
+        }).catch((error)=>{
+            assert("Error: Bad request parameters. from",error);
+        })
     })
 
     teardown(()=>{
