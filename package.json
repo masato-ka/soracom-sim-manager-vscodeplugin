@@ -1,0 +1,156 @@
+{
+    "name": "soracom-sim-manager-vscode",
+    "displayName": "soracom-sim-manager-vscode",
+    "description": "The SORACOM Air client for VSCode.",
+    "version": "0.0.1",
+    "publisher": "masato-ka",
+    "engines": {
+        "vscode": "^1.21.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onView:soracomSimManager",
+        "onCommand:soracom.sim.refresh",
+        "onCommand:soracom.sim.details",
+        "onCommand:soracom.sim.change.speed",
+        "onCommand:soracom.sim.change.name",
+        "onCommand:soracom.sim.add.tags",
+        "onCommand:soracom.sim.delete.tag",
+        "onCommand:soracom.sim.stats.air",
+        "onCommand:soracom.sim.stats.beam",
+        "onCommand:soracom.sim.bill",
+        "onCommand:soracom.sim.bill-latest"
+
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "views": {
+			"explorer": [
+				{
+					"id": "soracomSimManager",
+					"name": "soracom manager"
+				}
+			]
+        },
+        "menus":{
+            "view/title":[
+                {
+					"command": "soracom.sim.refresh",
+					"when": "view == soracomSimManager",
+					"group": "navigation"
+				},{
+					"command": "soracom.sim.bill",
+					"when": "view == soracomSimManager",
+					"group": "soracom-sim-bill@0"
+				},{
+					"command": "soracom.sim.bill-latest",
+					"when": "view == soracomSimManager",
+					"group": "soracom-sim-bill@1s"
+				}
+            ],
+            "view/item/context": [
+                {
+                    "command": "soracom.sim.details",
+                    "when": "view == soracomSimManager && viewItem == sim",
+                    "group" : "soracom-sim-manager@0"
+                },
+                {
+					"command": "soracom.sim.change.speed",
+					"when": "view == soracomSimManager && viewItem == sim",
+					"group": "soracom-sim-manager@1"
+                },
+                {
+					"command": "soracom.sim.change.name",
+					"when": "view == soracomSimManager && viewItem == sim",
+					"group": "soracom-sim-manager@2"
+                },
+                {
+					"command": "soracom.sim.add.tags",
+					"when": "view == soracomSimManager && viewItem == sim",
+					"group": "soracom-sim-manager@3"
+                },
+                {
+					"command": "soracom.sim.delete.tag",
+					"when": "view == soracomSimManager && viewItem == sim",
+					"group": "soracom-sim-manager@4"
+                },{
+                    "command": "soracom.sim.stats.air",
+                    "when": "view == soracomSimManager && viewItem ==sim",
+                    "group": "soracom-sim-manager@5"
+                },{
+                    "command": "soracom.sim.stats.beam",
+                    "when": "view == soracomSimManager && viewItem ==sim",
+                    "group": "soracom-sim-manager@6"
+                }
+
+            ]
+        },
+        "commands": [{
+            "command": "soracom.sim.details",
+            "title": "Get sim details"
+        },{
+            "command": "soracom.sim.change.speed",
+            "title": "Update sim speed"
+        },{
+            "command": "soracom.sim.change.name",
+            "title": "Update sim name"
+        },{
+            "command": "soracom.sim.add.tags",
+            "title": "Add new tag to sim"
+        },{
+            "command": "soracom.sim.delete.tag",
+            "title": "delete tag"
+        },{
+            "command": "soracom.sim.stats.air",
+            "title": "Show stats Air of sim"
+        },{
+            "command": "soracom.sim.stats.beam",
+            "title": "Show stats Beam of sim"
+        },{
+            "command": "soracom.sim.bill",
+            "title": "Show bill of SORACOM"
+        },{
+            "command": "soracom.sim.bill-latest",
+            "title": "Show latest bill of SORACOM"
+        },{
+            "command":"soracom.sim.refresh",
+            "title": "Refresh sim list",
+            "category":"SIM",
+            "icon": {
+                "light": "resources/light/refresh.svg",
+                "dark": "resources/dark/refresh.svg"
+            }
+        }]
+    },"configuration": {
+        "type": "object",
+        "title": "Soracom sim manager configuration",
+        "properties": {
+            "soracom-sim-manager.auth-key": {
+                "type": "string",
+                "default": "<<insert your SAM user auth key>>",
+                "description": "sam-auth-key"
+            },
+            "soracom-sim-manager.auth-key-secret": {
+                "type": "string",
+                "default": "<<insert your SAM user auth secret key>>",
+                "description": "sam-auth-secret-key"
+            }
+
+
+        }
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "eslint": "^4.11.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42",
+        "soracom":"^0.0.3"
+    }
+}
