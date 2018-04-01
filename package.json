@@ -2,7 +2,7 @@
     "name": "soracom-sim-manager-vscode",
     "displayName": "soracom-sim-manager-vscode",
     "description": "The SORACOM Air client for VSCode.",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "publisher": "masato-ka",
     "engines": {
         "vscode": "^1.21.0"
