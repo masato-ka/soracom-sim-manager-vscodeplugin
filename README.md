@@ -1,65 +1,49 @@
 # soracom-sim-manager-vscode README
 
-This is the README for your extension "soracom-sim-manager-vscode". After writing up a brief description, we recommend including the following sections.
+This is SORACOM API 3rd party integration plugin for VSCode. You can managed soracom service via API that provide soracom.
+
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### 3rd party dependency library
+
+* [SORACOM API client for Node.js](https://github.com/tatsuyaoiw/soracom)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+After install this plugin, you should be  setting auth info to user setting file of VSCode.
 
 For example:
 
-This extension contributes the following settings:
+This extension need the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+ * "soracom-sim-manager.sam-auth-key": <SAM user auth key>
+ * "soracom-sim-manager.sam-auth-secret-key": <SAM user auth secret key>
+
+> Tip: In this plugin, recommend use SAM user because security reason. please see the [https://dev.soracom.io/jp/docs/sam_permission/](https://dev.soracom.io/jp/docs/sam_permission/) for create and setting SAM user.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+If you happen some issue please [create new issue](https://github.com/masato-ka/soracom-sim-manager-vscodeplugin/issues/new) .
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
 
-### 1.0.0
+### 0.3.0
 
-Initial release of ...
+Initial release of basic sim management function as below.
 
-### 1.0.1
+* Get sim list
+* Get detail of each sim
+* Change sim name and speed
+* Modify sim tags
+* watch stats of each sim.
+* watch bill of SORACOM.
 
-Fixed issue #.
+# LICENSE
 
-### 1.1.0
+This software is released under the MIT License, see LICENSE file.
 
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
