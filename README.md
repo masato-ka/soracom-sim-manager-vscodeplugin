@@ -45,5 +45,5 @@ Initial release of basic sim management function as below.
 
 # LICENSE
 
-This software is released under the MIT License, see LICENSE file.
+This software is released under the MIT License, see LICENSE.txt file.
 
