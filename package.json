@@ -21,7 +21,8 @@
         "onCommand:soracom.sim.stats.air",
         "onCommand:soracom.sim.stats.beam",
         "onCommand:soracom.sim.bill",
-        "onCommand:soracom.sim.bill-latest"
+        "onCommand:soracom.sim.bill-latest",
+        "onCommand:soracom.group.list"
 
     ],
     "main": "./out/src/extension",
@@ -47,8 +48,12 @@
 				},{
 					"command": "soracom.sim.bill-latest",
 					"when": "view == soracomSimManager",
-					"group": "soracom-sim-bill@1s"
-				}
+					"group": "soracom-sim-bill@1"
+				},{
+                    "command": "soracom.group.list",
+                    "when": "view == soracomSimManager",
+                    "group": "soracom-sim-group@0"
+                }
             ],
             "view/item/context": [
                 {
@@ -114,6 +119,9 @@
         },{
             "command": "soracom.sim.bill-latest",
             "title": "Show latest bill of SORACOM"
+        },{
+            "command": "soracom.group.list",
+            "title": "Show group list"
         },{
             "command":"soracom.sim.refresh",
             "title": "Refresh sim list",
