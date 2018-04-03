@@ -47,7 +47,6 @@ class SoracomApiClient{
     authentication(_authKeyId, _authKey){
         var self = this;
         return new Promise((resolve)=>{
-            console.log(self.expireDate.getDay());
             var now = new Date( new Date().getTime()); 
             if(self.authenticated && (self.expireDate.getTime() > now.getTime())){
                 console.log("Already authentication.")
@@ -62,7 +61,6 @@ class SoracomApiClient{
                         operatorId: result['operatorId']
                     })
                     self.expireDate = self._getExpDate(result['token']);
-                    console.log(self.expireDate.getDay());
                     self.authenticated=true;
                     resolve(true);
                 });
