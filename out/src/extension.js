@@ -54,6 +54,9 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('soracom.group.list', function(){
         groupManagerCommand.getGroupList();
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('soracom.gorup.details', function(){
+        groupManagerCommand.getGroupDetails();
+    }))
     context.subscriptions.push(vscode.commands.registerCommand('soracom.sim.bill', function(){
         billManagerCommand.getBillWithDateUI();
     }));

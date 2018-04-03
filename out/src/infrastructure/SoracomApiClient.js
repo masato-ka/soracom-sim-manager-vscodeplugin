@@ -122,7 +122,7 @@ class SoracomApiClient{
         })
     }
 
-    updateGrop(_imsi, _groupId){
+    updateGropToSIM(_imsi, _groupId){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
                 this.soracom.post("subscribers/:imsi/set_group", {imsi:_imsi, groupId:_groupId},function(err,req,body){

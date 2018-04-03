@@ -22,7 +22,8 @@
         "onCommand:soracom.sim.stats.beam",
         "onCommand:soracom.sim.bill",
         "onCommand:soracom.sim.bill-latest",
-        "onCommand:soracom.group.list"
+        "onCommand:soracom.group.list",
+        "onCommand:soracom.gorup.details"
 
     ],
     "main": "./out/src/extension",
@@ -53,6 +54,10 @@
                     "command": "soracom.group.list",
                     "when": "view == soracomSimManager",
                     "group": "soracom-sim-group@0"
+                },{
+                    "command": "soracom.gorup.details",
+                    "when": "view == soracomSimManager",
+                    "group": "soracom-sim-group@1"
                 }
             ],
             "view/item/context": [
@@ -122,6 +127,9 @@
         },{
             "command": "soracom.group.list",
             "title": "Show group list"
+        },{
+            "command": "soracom.gorup.details",
+            "title": "Show group details"
         },{
             "command":"soracom.sim.refresh",
             "title": "Refresh sim list",
