@@ -12,6 +12,7 @@ http://opensource.org/licenses/mit-license.php
 const vscode = require('vscode');
 const _simTreeDataProvider = require('./SimTreeDataProvider');
 const SimManagerCommand = require('./commands/SimManager');
+const GroupManagerCommand = require('./commands/GroupManager');
 const BillManagerCommand = require('./commands/BillManager');
 const SoracomApiClient = require("./infrastructure/SoracomApiClient");
 
@@ -22,6 +23,7 @@ function activate(context) {
     const client = new SoracomApiClient.SoracomApiClient(settings['sam-auth-key'], settings['sam-auth-secret-key']);
     const simTreeDataProvider = new _simTreeDataProvider.SimTreeDataProvider(context, client);
     const simManagerCommand = new SimManagerCommand.SimManager(context, client);
+    const groupManagerCommand = new GroupManagerCommand.GroupManager(context, client);
     const billManagerCommand = new BillManagerCommand.BillManager(context, client);
 
     context.subscriptions.push(vscode.window.registerTreeDataProvider("soracomSimManager", simTreeDataProvider));
@@ -48,6 +50,9 @@ function activate(context) {
     }));
     context.subscriptions.push(vscode.commands.registerCommand('soracom.sim.stats.beam', function(currentSim){
         simManagerCommand.getSoracomAirStats(currentSim);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('soracom.group.list', function(){
+        groupManagerCommand.getGroupList();
     }));
     context.subscriptions.push(vscode.commands.registerCommand('soracom.sim.bill', function(){
         billManagerCommand.getBillWithDateUI();

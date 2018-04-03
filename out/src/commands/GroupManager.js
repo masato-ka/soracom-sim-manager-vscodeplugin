@@ -22,9 +22,13 @@ class GroupManager{
 
     getGroupList(){
         this.client.getGroups().then(result=>{
-            this.showResultToOutput()
+            const groupList = []
+            result.forEach(result=>{
+                groupList.push({groupId:result['groupId'],groupName:result['tags']['name']});
+            })
+            this.showResultToOutput("[SORACOM SIM Manager][Group list]:", groupList)
         }).catch(error=>{
-
+            vscode.window.showErrorMessage(error);
         })
     }
 
@@ -37,4 +41,4 @@ class GroupManager{
 
 }
 
-exports.Groupmanager = GroupManager
+exports.GroupManager = GroupManager;
