@@ -17,6 +17,23 @@ class SoracomApiClient{
         this.authKey =authKey;
         this.soracom = new _soracom();
         this.authenticated = false;
+        this.expireDate = new Date(new Date().getTime()); 
+    }
+
+    _atob(str) { 
+        //See http://phiary.me/node-js-btoa-atob/
+        return new Buffer(str, 'base64').toString('binary');
+    }
+
+    _decodeJWT(jwt){
+        const jwtBody = jwt.split(".")[1];
+        const decodeStr = this._atob(jwtBody.replace(/\-/g, '+').replace(/_/g, '/'));
+        return JSON.parse(decodeStr)
+    }
+
+    _getExpDate(jwt){
+        const jwtBodyObject = this._decodeJWT(jwt);
+        return new Date(jwtBodyObject['exp']* 1000);
     }
 
     _authentication(_authKeyId, _authKey){
@@ -28,21 +45,27 @@ class SoracomApiClient{
     }
 
     authentication(_authKeyId, _authKey){
-        return new Promise(resolve=>{
-            if(this.authenticated){
+        var self = this;
+        return new Promise((resolve)=>{
+            console.log(self.expireDate.getDay());
+            var now = new Date( new Date().getTime()); 
+            if(self.authenticated && (self.expireDate.getTime() > now.getTime())){
                 console.log("Already authentication.")
                 resolve(true);
             }else{
-            this._authentication(_authKeyId, _authKey).then(result=>{
-                console.log("Get authentication info");
-                this.soracom.defaults({
-                    apiKey: result['apiKey'],
-                    token: result['token'],
-                    operatorId: result['operatorId']
-                })
-                this.authenticated=true;
-                resolve(true);
-            });
+                //var self2 = self
+                self._authentication(_authKeyId, _authKey).then(result=>{
+                    console.log("Get authentication info");
+                    self.soracom.defaults({
+                        apiKey: result['apiKey'],
+                        token: result['token'],
+                        operatorId: result['operatorId']
+                    })
+                    self.expireDate = self._getExpDate(result['token']);
+                    console.log(self.expireDate.getDay());
+                    self.authenticated=true;
+                    resolve(true);
+                });
             }
         });
     }
