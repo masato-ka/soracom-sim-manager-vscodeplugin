@@ -52,7 +52,6 @@ class SoracomApiClient{
                 console.log("Already authentication.")
                 resolve(true);
             }else{
-                //var self2 = self
                 self._authentication(_authKeyId, _authKey).then(result=>{
                     console.log("Get authentication info");
                     self.soracom.defaults({
