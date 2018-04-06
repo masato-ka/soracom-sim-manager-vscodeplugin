@@ -10,15 +10,11 @@ http://opensource.org/licenses/mit-license.php
 const vscode = require("vscode");
 
 class SimGroup extends vscode.TreeItem{
-    constructor(imsi, name, group, plan, speedClass, status) {
-        super("["+name+"]:"+imsi);
-        this.imsi = imsi;
+    constructor(groupId, name) {
+        super(name);
+        this.groupId = groupId;
         this.name = name;
-        this.group = group;
-        this.plan = plan;
-        this.speedClass = speedClass;
-        this.status = status;
-        this.contextValue = "sim";
+        this.contextValue = "group";
     }
 
 }

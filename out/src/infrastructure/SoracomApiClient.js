@@ -26,7 +26,8 @@ class SoracomApiClient{
             });
         })
     }
-
+    //The interim solution for problem  that about soracom library take over previous request body. 
+    //Create new instance of soracom library with each request.
     authentication(_authKeyId, _authKey){
         return new Promise(resolve=>{
             if(this.authenticated){
@@ -37,8 +38,7 @@ class SoracomApiClient{
                 console.log("Get authentication info");
                 this.soracom.defaults({
                     apiKey: result['apiKey'],
-                    token: result['token'],
-                    operatorId: result['operatorId']
+                    token: result['token']
                 })
                 this.authenticated=true;
                 resolve(true);

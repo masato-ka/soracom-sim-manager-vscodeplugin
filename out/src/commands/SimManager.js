@@ -67,7 +67,7 @@ class SimManager{
                 }).then(result=>{
                     var imsi = result.split(":")[0];                    
                     if(imsi===""){
-                        return reject(new Error('Invalid IMSI number'));
+                        return reject(new Error('Not found IMSI number.'));
                     }
                     resolve(imsi)
                 })
@@ -75,11 +75,11 @@ class SimManager{
                 try{
                     var imsi = soracomAirSim['imsi'];
                     if(imsi===""){
-                        return reject(new Error('Invalid IMSI number'));
+                        return reject(new Error('Not found IMSI number.'));
                     }
                     resolve(imsi);
                 }catch(e){
-                    return resolve(new Error('Invalid IMSI nuber'));
+                    return resolve(new Error('Not found IMSI number.'));
                 }
             }
         })

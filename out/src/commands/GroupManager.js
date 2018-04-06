@@ -10,6 +10,7 @@ http://opensource.org/licenses/mit-license.php
 "use strict";
 
 const vscode = require('vscode');
+const SimGroup = require('../model/SimGroup');
 
 class GroupManager{
 
@@ -32,8 +33,13 @@ class GroupManager{
         })
     }
 
-    getGroupDetails(){
-        this._commandHandler("Get group details", "_requestGroupDetails");    
+    getGroupDetails(simGroup){
+        this._commandHandler(simGroup,"Get group details", "_requestGroupDetails");    
+    }
+
+    createGroup(){
+        var simGroup = new SimGroup.SimGroup("12345678", 'dummyGroup');//This is dummy group for Not show select GroupUI.
+        this._commandHandler(simGroup,"Create group list", "_requestCreateGroup");
     }
 
     showResultToOutput(header, body){
@@ -42,36 +48,52 @@ class GroupManager{
         this.outputChannel.show(true);
     }
 
-
-    _commandHandler(commandHeader, requestFunctionName){
-        this._getGroupIds().then(result=>{
+    _commandHandler(_simGroup, commandHeader, requestFunctionName){
+        this._getGroupId(_simGroup).then(result=>{
             return this[requestFunctionName](result);
         }).then(result=>{
             this.showResultToOutput("[SORACOM SIM Manager]["+commandHeader+"]:", result);
         }).catch(error=>{
-            vscode.window.showErrorMessage(error);
+            console.log(error);
+            if(!error){
+                vscode.window.showErrorMessage("Faild requester message");                
+            }else{
+                vscode.window.showErrorMessage(error);
+            }
         })
     }
 
-    _getGroupIds(){
+    _getGroupId(_simGroup){
         return new Promise((resolve,reject)=>{
-            this.client.getGroups().then(result=>{
-                return this._formatGroupList(result);
-            }).then(result=>{
-                var chooseList = [];
-                result.forEach(group=>{
-                    chooseList.push("["+group['groupName']+"]:"+group['groupId']);
-                })
-                return vscode.window.showQuickPick(
-                    chooseList, {placeHolder:"Choose Group"}
-                )
-            }).then(result=>{
-                var groupId = result.split(':')[1];
-                if(!groupId || groupId === ''){return reject(new Error('Need GroupId.'))}
-                resolve(groupId);
-            }).catch(error=>{
-                reject(error['message']);
-            });
+            if(!_simGroup){
+                this.client.getGroups().then(result=>{
+                    return this._formatGroupList(result);
+                }).then(result=>{
+                    var chooseList = [];
+                    result.forEach(group=>{
+                        chooseList.push("["+group['groupName']+"]:"+group['groupId']);
+                    })
+                    return vscode.window.showQuickPick(
+                        chooseList, {placeHolder:"Choose Group"}
+                    )
+                }).then(result=>{
+                    var groupId = result.split(':')[1];
+                    if(!groupId || groupId === ''){return reject(new Error("Not found Group ID"))}
+                    resolve(groupId);
+                }).catch(error=>{
+                    reject(error['message']);
+                });
+            }else{
+                try{
+                    var simGroupId = _simGroup['groupId'];
+                    if(!simGroupId){
+                        return reject(new Error("Not found Group ID"));
+                     }
+                     resolve(simGroupId);
+                }catch(e){
+                    return reject(new Error("Not found Group ID"))
+                }
+            }
         });
     }
 
@@ -83,6 +105,18 @@ class GroupManager{
                 reject(error['message']);
             })
         })
+    }
+
+    _requestCreateGroup(){
+        return new Promise((resolve,reject)=>{
+            vscode.window.showInputBox({placeHolder:"Input group name."}).then(result=>{
+                this.client.createNewGroup(result).then(result=>{
+                    resolve(result);
+                }).catch(error=>{
+                    reject(error['message']);
+                });
+            });
+        });
     }
 
     _formatGroupList(groupList){
