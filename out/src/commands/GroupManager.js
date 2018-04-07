@@ -42,6 +42,10 @@ class GroupManager{
         this._commandHandler(simGroup,"Create group list", "_requestCreateGroup");
     }
 
+    deleteGroup(simGroup){
+        this._commandHandler(simGroup, "Delete group", "_requestDeleteGroup");
+    }
+
     showResultToOutput(header, body){
         this.outputChannel.appendLine(header);
         this.outputChannel.append(JSON.stringify(body));
@@ -117,6 +121,16 @@ class GroupManager{
                 });
             });
         });
+    }
+
+    _requestDeleteGroup(groupId){
+        return new Promise((resolve, reject)=>{
+            this.client.deleteGroup(groupId).then(result=>{
+                resolve(result);
+            }).catch(error=>{
+                reject(error['message']);
+            })
+        })
     }
 
     _formatGroupList(groupList){
