@@ -233,11 +233,11 @@ class SoracomApiClient{
         });
     }
 
-    updateGroupTags(_groupId,tags){
+    updateGroupTags(_groupId, tags){
         return new Promise(resolve=>{
             this.authentication(this.authKeyId, this.authKey).then(result=>{
-                tags['groupId'] = _groupId;
-                this.soracom.put("/groups/:groupId/tags",tags, function(err,req,body){
+                this.soracom.defaults({ groupId: _groupId });
+                this.soracom.put("/groups/:groupId/tags", tags, function(err,req,body){
                     resolve(body);
                 })
             })

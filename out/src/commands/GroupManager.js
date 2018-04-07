@@ -46,6 +46,10 @@ class GroupManager{
         this._commandHandler(simGroup, "Delete group", "_requestDeleteGroup");
     }
 
+    updateGroupTags(simGroup){
+        this._commandHandler(simGroup, "Update tags", "_requestGroupTags");
+    }
+
     showResultToOutput(header, body){
         this.outputChannel.appendLine(header);
         this.outputChannel.append(JSON.stringify(body));
@@ -130,6 +134,20 @@ class GroupManager{
             }).catch(error=>{
                 reject(error['message']);
             })
+        })
+    }
+
+    _requestGroupTags(groupId){
+        return new Promise((resolve, reject)=>{
+            vscode.window.showInputBox({placeHolder:"Input tag[{\"tagName\":\"name\", \"tagValue\":\"value\"},.....]"})
+                .then(result=>{
+                    var tags = JSON.parse(result);
+                    this.client.updateGroupTags(groupId, tags).then(result=>{
+                        resolve(result);
+                    }).catch(error=>{
+                        reject(error["message"]);
+                    })
+                })
         })
     }
 

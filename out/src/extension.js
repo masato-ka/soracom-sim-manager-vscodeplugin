@@ -63,6 +63,9 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('soracom.gorup.delete', function(simGroup){
         groupManagerCommand.deleteGroup(simGroup);
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('soracom.gorup.tags.update', function(simGroup){
+        groupManagerCommand.updateGroupTags(simGroup);
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('soracom.sim.bill', function(){
         billManagerCommand.getBillWithDateUI();
     }));
