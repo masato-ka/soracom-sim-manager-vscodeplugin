@@ -26,7 +26,8 @@
         "onCommand:soracom.gorup.details",
         "onCommand:soracom.gorup.create",
         "onCommand:soracom.gorup.delete",
-        "onCommand:soracom.gorup.tags.update"
+        "onCommand:soracom.gorup.tags.update",
+        "onCommand:soracom.gorup.tags.delete"
 
     ],
     "main": "./out/src/extension",
@@ -73,6 +74,10 @@
                     "command": "soracom.gorup.tags.update",
                     "when": "view == soracomSimManager",
                     "group": "soracom-sim-group@4"
+                },{
+                    "command": "soracom.gorup.tags.delete",
+                    "when": "view == soracomSimManager",
+                    "group": "soracom-sim-group@5"
                 }
 
             ],
@@ -155,6 +160,9 @@
         },{
             "command": "soracom.gorup.tags.update",
             "title": "Update group tags"
+        },{
+            "command": "soracom.gorup.tags.delete",
+            "title": "Delete group tags"
         },{
             "command":"soracom.sim.refresh",
             "title": "Refresh sim list",

@@ -47,7 +47,11 @@ class GroupManager{
     }
 
     updateGroupTags(simGroup){
-        this._commandHandler(simGroup, "Update tags", "_requestGroupTags");
+        this._commandHandler(simGroup, "Update group tags", "_requestGroupTags");
+    }
+
+    deleteGroupTags(simGroup){
+        this._commandHandler(simGroup, "Delete group tags","_requestDeleteGroupTag");
     }
 
     showResultToOutput(header, body){
@@ -148,6 +152,18 @@ class GroupManager{
                         reject(error["message"]);
                     })
                 })
+        })
+    }
+
+    _requestDeleteGroupTag(groupId){
+        return new Promise((resolve, reject)=>{
+            vscode.window.showInputBox({placeHolder:"input delte tag name."}).then(result=>{
+                this.client.deleteGroupTag(groupId, result).then(result=>{
+                    resolve(result);
+                }).catch(error=>{
+                    reject(error["message"]);
+                })
+            })
         })
     }
 
