@@ -10,6 +10,7 @@ http://opensource.org/licenses/mit-license.php
 var vscode = require('vscode')
 var _SoracomAirSim = require('./model/SoracomAirSim')
 var SimManagerCommand = require('./commands/SimManager.js')
+var path = require("path");
 class SimTreeDataProvider{
 
     constructor(context,apiClient){
@@ -30,6 +31,7 @@ class SimTreeDataProvider{
 
     getChildren(element){
         if(!element){
+
             return new Promise(resolve=>{
                 var resultList =[];
                 this.apiClient.getSimList().then(result=>{
@@ -37,7 +39,7 @@ class SimTreeDataProvider{
                         resultList.push(new _SoracomAirSim.SoracomAirSim(
                             item['imsi'], item['tags']['name'], 
                             item['groupId'], item['plan'], 
-                            item['speedClass'], item['status']));
+                            item['speedClass'], item['status'], this._getConnectionStatusIconPath(item)));
                     });
                     resolve(resultList);
                 })
@@ -46,7 +48,6 @@ class SimTreeDataProvider{
             
         }
     }
-
 
     getDefaultTreeItems() {
         const items= [];
@@ -66,6 +67,14 @@ class SimTreeDataProvider{
             title: "",
         };
         return commandItem;
+    }
+
+    _getConnectionStatusIconPath(sim){
+        if(sim['sessionStatus']['online']){
+            return this.context.asAbsolutePath(path.join("resources", `sim-status-connection.svg`));
+        }else{
+            return this.context.asAbsolutePath(path.join("resources", `sim-status-disconnection.svg`));
+        }
     }
 }
 

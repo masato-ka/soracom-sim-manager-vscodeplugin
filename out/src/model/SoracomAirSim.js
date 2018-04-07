@@ -10,7 +10,7 @@ http://opensource.org/licenses/mit-license.php
 const vscode = require('vscode')
 
 class SoracomAirSim extends vscode.TreeItem{
-    constructor(imsi, name, group, plan, speedClass, status) {
+    constructor(imsi, name, group, plan, speedClass, status, iconPath) {
         super("["+name+"]:"+imsi);
         this.imsi = imsi;
         this.name = name;
@@ -18,6 +18,7 @@ class SoracomAirSim extends vscode.TreeItem{
         this.plan = plan;
         this.speedClass = speedClass;
         this.status = status;
+        this.iconPath = iconPath;
         this.contextValue = "sim";
     }
 

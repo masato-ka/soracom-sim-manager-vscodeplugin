@@ -14,6 +14,7 @@ class SimGroup extends vscode.TreeItem{
         super(name);
         this.groupId = groupId;
         this.name = name;
+        this.iconPath = ""
         this.contextValue = "group";
     }
 
