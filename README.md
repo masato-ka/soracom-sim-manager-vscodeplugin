@@ -31,8 +31,24 @@ If you happen some issue please [create new issue](https://github.com/masato-ka/
 
 ## Release Notes
 
+### 0.4.0 2018/04/08
 
-### 0.3.0
+
+Feature addition and bug fix release. mainly improvement SIM group management feature.
+
+* Feature
+    * Show sim group list
+    * Show detail sim group
+    * Create new SIM group
+    * Delete SIM group
+    * Manage SIM group tags
+    * Show status of SIM connection.
+
+* Bug fix
+    * Adapt for expire API token.
+    * Remove previous request body from current it.
+
+### 0.3.0 2018/04/02
 
 Initial release of basic sim management function as below.
 
