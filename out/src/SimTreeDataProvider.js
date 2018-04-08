@@ -31,7 +31,7 @@ class SimTreeDataProvider{
 
     getChildren(element){
         if(!element){
-
+       
             return new Promise(resolve=>{
                 var resultList =[];
                 this.apiClient.getSimList().then(result=>{

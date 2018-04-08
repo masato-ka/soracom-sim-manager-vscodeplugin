@@ -2,13 +2,14 @@
     "name": "soracom-sim-manager-vscode",
     "displayName": "soracom-sim-manager-vscode",
     "description": "The SORACOM Air client for VSCode.",
-    "version": "0.3.0",
+    "version": "0.4.1",
     "publisher": "masato-ka",
     "engines": {
         "vscode": "^1.21.0"
     },
     "categories": [
-        "Other"
+        "3rd Party",
+        "SORACOM"
     ],
     "activationEvents": [
         "onView:soracomSimManager",
@@ -28,9 +29,19 @@
         "onCommand:soracom.gorup.delete",
         "onCommand:soracom.gorup.tags.update",
         "onCommand:soracom.gorup.tags.delete"
-
     ],
     "main": "./out/src/extension",
+    "license": "SEE LICENSE IN LICENSE.txt",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/masato-ka/soracom-sim-manager-vscodeplugin"
+    },
+    "keywords": [
+        "soracom",
+        "sim",
+        "cloud",
+        "IoT"
+    ],
     "contributes": {
         "views": {
 			"explorer": [
@@ -200,6 +211,9 @@
         "eslint": "^4.11.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42",
+        "soracom":"^0.0.3"
+    },
+    "dependencies":{
         "soracom":"^0.0.3"
     }
 }
